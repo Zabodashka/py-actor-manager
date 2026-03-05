@@ -26,7 +26,7 @@ class ActorManager:
         self.cursor.execute(
             f'INSERT INTO {self.table_name} (first_name, last_name) '
             'VALUES (?, ?)',
-            (first_name, last_name),
+            (first_name, last_name)
         )
         self.conn.commit()
 
@@ -36,11 +36,7 @@ class ActorManager:
         )
         rows = self.cursor.fetchall()
         return [
-            Actor(
-                id=row[0],
-                first_name=row[1],
-                last_name=row[2],
-            )
+            Actor(row[0], row[1], row[2])
             for row in rows
         ]
 
@@ -48,18 +44,18 @@ class ActorManager:
         self,
         pk: int,
         new_first_name: str,
-        new_last_name: str,
+        new_last_name: str
     ) -> None:
         self.cursor.execute(
             f'UPDATE {self.table_name} SET first_name = ?, last_name = ? '
             'WHERE actor_id = ?',
-            (new_first_name, new_last_name, pk),
+            (new_first_name, new_last_name, pk)
         )
         self.conn.commit()
 
     def delete(self, pk: int) -> None:
         self.cursor.execute(
             f'DELETE FROM {self.table_name} WHERE actor_id = ?',
-            (pk,),
+            (pk,)
         )
         self.conn.commit()

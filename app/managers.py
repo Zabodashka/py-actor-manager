@@ -14,43 +14,49 @@ class ActorManager:
 
     def _create_table(self) -> None:
         self.cursor.execute(
-            f"""
-            CREATE TABLE IF NOT EXISTS {self.table_name} (
-                actor_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                first_name TEXT NOT NULL,
-                last_name TEXT NOT NULL
-            )
-            """
+            f'CREATE TABLE IF NOT EXISTS {self.table_name} ('
+            'id INTEGER PRIMARY KEY AUTOINCREMENT, '
+            'first_name TEXT NOT NULL, '
+            'last_name TEXT NOT NULL'
+            ')'
         )
         self.conn.commit()
 
     def create(self, first_name: str, last_name: str) -> None:
         self.cursor.execute(
-            f"INSERT INTO {self.table_name} (first_name, last_name) "
-            "VALUES (?, ?)",
+            f'INSERT INTO {self.table_name} '
+            '(first_name, last_name) VALUES (?, ?)',
             (first_name, last_name),
         )
         self.conn.commit()
 
     def all(self) -> List[Actor]:
         self.cursor.execute(
-            f"SELECT actor_id, first_name, last_name FROM {self.table_name}"
+            f'SELECT id, first_name, last_name FROM {self.table_name}'
         )
         rows = self.cursor.fetchall()
-        return [Actor(actor_id=row[0], first_name=row[1], last_name=row[2])
-                for row in rows]
+        return [
+            Actor(id=row[0], first_name=row[1], last_name=row[2])
+            for row in rows
+        ]
 
-    def update(self, pk: int, new_first_name: str, new_last_name: str) -> None:
+    def update(
+        self,
+        pk: int,
+        new_first_name: str,
+        new_last_name: str,
+    ) -> None:
         self.cursor.execute(
-            f"UPDATE {self.table_name} SET first_name = ?, last_name = ? "
-            "WHERE actor_id = ?",
+            f'UPDATE {self.table_name} SET first_name = ?, last_name = ? '
+            'WHERE id = ?',
             (new_first_name, new_last_name, pk),
         )
         self.conn.commit()
 
     def delete(self, pk: int) -> None:
         self.cursor.execute(
-            f"DELETE FROM {self.table_name} WHERE actor_id = ?",
+            f'DELETE FROM {self.table_name} WHERE id = ?',
             (pk,),
         )
         self.conn.commit()
+        

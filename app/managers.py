@@ -36,7 +36,12 @@ class ActorManager:
         )
         rows = self.cursor.fetchall()
         return [
-            Actor(id=row[0], first_name=row[1], last_name=row[2]) for row in rows
+            Actor(
+                id=row[0],
+                first_name=row[1],
+                last_name=row[2],
+            )
+            for row in rows
         ]
 
     def update(

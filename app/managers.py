@@ -4,10 +4,9 @@ from app.models import Actor
 
 
 class ActorManager:
-    def __init__(self, db_name: str, table_name: str = 'actors') -> None:
-        self.db_name = db_name
+    def __init__(self, db_name: str, table_name: str) -> None:
         self.table_name = table_name
-        self.conn = sqlite3.connect(self.db_name)
+        self.conn = sqlite3.connect(db_name)
         self.cursor = self.conn.cursor()
         self._create_table_if_not_exists()
 
@@ -38,7 +37,12 @@ class ActorManager:
             for row in rows
         ]
 
-    def update(self, pk: int, new_first_name: str, new_last_name: str) -> None:
+    def update(
+        self,
+        pk: int,
+        new_first_name: str,
+        new_last_name: str
+    ) -> None:
         self.cursor.execute(
             f'UPDATE {self.table_name} SET first_name = ?, last_name = ? '
             'WHERE id = ?',
@@ -48,6 +52,7 @@ class ActorManager:
 
     def delete(self, pk: int) -> None:
         self.cursor.execute(
-            f'DELETE FROM {self.table_name} WHERE id = ?', (pk,)
+            f'DELETE FROM {self.table_name} WHERE id = ?',
+            (pk,)
         )
         self.conn.commit()

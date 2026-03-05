@@ -4,10 +4,10 @@ from app.models import Actor
 
 
 class ActorManager:
-    def __init__(self, database: str, table_name: str = 'actors') -> None:
-        self.database = database
+    def __init__(self, db_name: str, table_name: str = 'actors') -> None:
+        self.db_name = db_name
         self.table_name = table_name
-        self.conn = sqlite3.connect(self.database)
+        self.conn = sqlite3.connect(self.db_name)
         self.cursor = self.conn.cursor()
         self._create_table_if_not_exists()
 

@@ -59,4 +59,3 @@ class ActorManager:
             (pk,),
         )
         self.conn.commit()
-        
